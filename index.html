@@ -1452,6 +1452,34 @@ window.addEventListener("error", function(e){
     });
   }
 
+  function lookbackPhrase(key){
+    var P = [
+      ["あれからお変わりありませんか。私は静かに、ここにおります。","Has everything been all right since then? I am quietly here."],
+      ["あの日の答えは、今もそっとここにあります。","Your answer from that day is still here, resting gently."],
+      ["時が流れても、いつまでも傍らに寄り添っていますよ。","Though time passes, I remain quietly by your side, always."]
+    ];
+    var h = 0;
+    for (var i=0; i<key.length; i++) h += key.charCodeAt(i) * (i+1);
+    var p = P[h % P.length];
+    return L(p[0], p[1]);
+  }
+
+  function lookbackHtml(key, entry){
+    if (!(key < todayKey) || !entry || !entry.answer) return '';
+    var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var qi = entry.qIndex;
+    var q = (LANG==="en" && Q_EN[qi]) || QUESTIONS[qi] || '';
+    return '<div class="dashed"></div>'+
+      '<div class="eyebrow" style="margin-bottom:6px;">'+L("この日の問い","Question of the day")+'</div>'+
+      '<div style="font-size:15px;line-height:1.8;margin-bottom:12px;">'+esc(q)+'</div>'+
+      '<div class="eyebrow" style="margin-bottom:6px;">'+L("答えたこと","Your answer")+'</div>'+
+      '<div style="font-size:15px;line-height:1.9;white-space:pre-wrap;margin-bottom:6px;">'+esc(entry.answer)+'</div>'+
+      '<div style="margin:18px 0 4px;text-align:center;opacity:.75;font-size:14px;line-height:1.9;">'+
+        lookbackPhrase(key)+
+      '</div>'+
+      '<div class="dashed"></div>';
+  }
+
   function openDaySheet(key){
     var parts = key.split("-").map(Number);
     var dt = new Date(parts[0], parts[1]-1, parts[2]);
@@ -1477,6 +1505,7 @@ window.addEventListener("error", function(e){
         '<div class="fname" style="font-size:18px;">'+flower.name+'</div>'+
         '<div class="fmean">'+flower.mean+'</div>'+
       '</div>'+
+      lookbackHtml(key, entry)+
       '<label class="check"><input type="checkbox" id="memorial-toggle" '+(isMemorial?'checked':'')+'> '+L("この日を記念日にする","Mark this day as a memorial")+'</label>'+
       '<div class="dashed"></div>'+
       '<div class="eyebrow" style="margin-bottom:8px;">'+L("日録","Journal")+'</div>'+
