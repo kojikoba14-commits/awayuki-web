@@ -1,5 +1,5 @@
 # 淡雪 (Awayuki)
-
+▶ **アプリを開く / Open the app**: https://kojikoba14-commits.github.io/awayuki-web/
 金継ぎの茶碗をモチーフにした、日々の記録のアプリです。
 毎日ひとつの「問い」に答えるだけ。続けるほどに、器の色が白から紅、緋、紫へと移ろいます。
 
